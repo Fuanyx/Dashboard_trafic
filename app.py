@@ -17,6 +17,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import datetime
+import streamlit_authenticator as stauth
 
 # Parámetros de conexión (ajusta a tu base de datos)
 host = "45.132.241.118"
