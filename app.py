@@ -106,11 +106,14 @@ if authentication_status:
         # Total de registros
         total_registros = df['valor'].sum()
 
+        fecha_max = pd.to_datetime(df['Fecha_Hora'].max())
+
         # Mostrar tarjetas con st.metric (tarjetas estáticas)
         st.title("Dashboard con métricas estáticas")
 
         # Crear tres columnas
-        c1, c2, c3 = st.columns(3)
+        
+        c1, c2, c3, c4 = st.columns(4)
 
         with c1:
             st.metric(label="Total del día", value=f"{total_dia}")
@@ -120,6 +123,9 @@ if authentication_status:
 
         with c3:
             st.metric(label="Total de registros", value=f"{total_registros}")
+
+        with c4:
+            st.metric(label="Última ejecución", value=f"{fecha_max}")
         
 
         df['Fecha'] = pd.to_datetime(df['Fecha'])
