@@ -88,9 +88,10 @@ if authentication_status:
         df = cargar_datos()
         df['Fecha'] = pd.to_datetime(df['Fecha'])
         df['valor'] = 1
+        df2 = df[['Fecha_Hora']]
         df = df.groupby('Fecha')['valor'].sum().reset_index()
         df = df[['Fecha', 'valor']]
-
+        
         # Obtener el día, mes y total de registros
         today = datetime.today()
         hoy = today.date()
@@ -106,14 +107,22 @@ if authentication_status:
         # Total de registros
         total_registros = df['valor'].sum()
 
-        fecha_max = pd.to_datetime(df['Fecha_Hora'].max())
+        fecha_max = pd.to_datetime(df2['Fecha_Hora'].max())
+        fecha_max = fecha_max.strftime("%d/%m/%Y %H:%M")
+
 
         # Mostrar tarjetas con st.metric (tarjetas estáticas)
         st.title("Dashboard con métricas estáticas")
 
         # Crear tres columnas
-        
-        c1, c2, c3, c4 = st.columns(4)
+        # Crear una sola columna
+        c4 = st.columns(1)[0]  # Extrae la única columna
+
+        with c4:
+            st.metric(label="Última ejecución", value=f"{fecha_max}")
+
+
+        c1, c2, c3= st.columns(3)
 
         with c1:
             st.metric(label="Total del día", value=f"{total_dia}")
@@ -124,8 +133,6 @@ if authentication_status:
         with c3:
             st.metric(label="Total de registros", value=f"{total_registros}")
 
-        with c4:
-            st.metric(label="Última ejecución", value=f"{fecha_max}")
         
 
         df['Fecha'] = pd.to_datetime(df['Fecha'])
